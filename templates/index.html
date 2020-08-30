@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>
+            Improper Text Detector
+        </title>
+        <style>
+            body{
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;            
+    margin:0px;
+    text-align: center;
+    background-color:#d6e0f0;
+    color:#393b44;
+    
+}
+
+
+p,span{  
+    padding-left:10px;
+    padding-right:10px;
+    margin:0px;
+    background-color: #f1f3f8;
+    display: block;
+    /* text-align:left */
+    font-size: larger;
+    
+}
+
+input[type = 'submit']{
+    
+    width: 300px;
+    height:50px;
+    border-radius: 20px;
+    border-color:  #e11d74;
+    background-color: #e11d74;
+    font-size: 20px;
+    font-weight: 600;
+    color:white;
+
+    /* positioning  */
+    
+    
+
+
+}
+
+textarea{
+    resize: none;
+    width: 100%;
+    height: 200px;
+    border: 1px solid white;
+    font-size: large;
+    
+  
+
+}
+
+#input_section{
+    
+    /* width: 530px; */
+    margin-left: 150px;
+    margin-right:150px;
+    background-color: white;
+    padding: 13px;
+    border-radius: 10px;
+    /* border: 3px solid black; */
+    box-shadow: 0px 3px 3px ;
+    padding-top:15px;
+    
+
+}
+
+
+input[type = 'submit']:hover{
+    
+    
+    border-color:  rgb(241, 157, 185);
+    background-color: rgb(236, 147, 177);
+    
+
+    /* positioning  */
+}
+
+#progress{
+    
+    width:400px;
+    height:30px;
+    /* border-color:#d6e0f0; */
+    border-radius: 0px; 
+    color:#393b44;
+    background:#d6e0f0;
+    
+}
+
+progress::-moz-progress-bar {
+   
+    background:rgb(255, 0, 85);;
+    border-radius: 10px;
+    
+   
+
+}
+
+
+#message{
+   margin:10px;
+    color:#393b44;
+    border-radius: 10px;
+    text-align: left;
+    padding:20px;
+
+}
+
+table{
+    border-spacing: 10px;
+
+}
+
+
+#style_1{
+    
+    margin:10px;
+    border-radius: 20px;
+}
+
+p{
+    border-top-right-radius: 10px;
+    border-top-left-radius: 10px;
+    
+}
+
+ul{
+    border-bottom-right-radius: 10px;
+    border-bottom-left-radius: 10px;
+}
+
+
+
+
+        </style>
+    </head>
+    <body>
+        <h1> Improper Text Detectorp</h1>
+        
+
+
+        <section id = "style_1">
+        
+            
+            <p  style = "text-align:left;">
+                <span style = "text-align:left;font-size:x-large">About the project</span>
+                <br>
+                This project is ment to detect any toxicity ,
+                This project is meant to detect any toxicity, haterade or anything that shows negative emotion in the user's comment. Warning them about the negative emotions he/she may convey knowingly or unknowingly. 
+                This can also act as a filter for social media platforms where each post can be checked for toxicity before forwarding it helping reduce negativity
+                
+
+                <br>
+                <br>
+                
+                There are two different models trained
+                <br> 
+                <ul style = "text-align:left; background-color: #f1f3f8;margin:0px">
+                <li>SDGClassifier which  gets a 69% test accuracy </li>    
+                <li>I had trained a better model based on bi-lstm using different pretrained embeddings.</li>
+                <!-- <li> An LSTM with Glove word embedding getting about 97 % accuracy on the test dataset.</li> -->
+                </ul>
+                <br>
+                <span >check the jupyter notebooks provided at the end for implementation details of the models and the dataset <span>
+               
+                <br>    
+                <b><i>The model detects 6 types of cases toxic,severe_toxic, obscene, threat, insult, identity hate.</i></b>
+            </p>
+
+        </section>
+
+        <br>
+
+
+
+        <section >
+        <!-- input section -->
+        <section id = "input_section">
+            <form method = 'post' action = '/predict/'>
+                <textarea name = 'input' required></textarea>
+                <br>
+                <input type = "submit"/>
+                <br>
+                 SGDClassifier:<input type='radio' value = "ml" name = "model" checked/>
+                 BILSTM:<input type='radio' value = "dnn" name = "model"/>
+        </form>
+    </section>
+
+    </section>
+
+    <br>
+    <br>
+    <br>
+
+
+    <section>   
+        <div >
+            
+            {% if result %}
+
+            <p id = "message" style = "font-size:15px;"> 
+            <span style = "font-size:25px;text-align:left;">Message</span> 
+            <br>
+
+            {{result.message}}
+            
+            </p>
+            <br>
+
+            
+  
+
+            {% if result.toxic  %}
+
+            <h3>Model Used :{{result.model}}</h3>
+
+            <table align = "center">
+            {% for i in range(6) %}
+         
+            <tr>
+                <td>
+                    <label   for = "progress" 
+                        style = "font-weight: 600; font-size: larger; font-variant: small-caps;"
+                    >{{result.classes[i]}}</label>    
+                </td>    
+                <td>
+                    <progress id = "progress" 
+                    max = "100"
+                    value = "{{result.proba[i]}}"  >
+                    </progress>   
+                </td>
+            </tr>
+            {% endfor %}
+            </table>
+            {%else%}
+
+            <h3><u>No toxcicity found safe to post</u></h3>
+
+            {% endif %}
+
+            {% endif %}
+          
+               
+        
+        </div>
+    </section>
+        
+
+    
+    </body>
+</html>
