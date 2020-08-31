@@ -12,8 +12,6 @@
 
 
 # Trying out preprocessing  using the same pipeline as our project
-
-
 #helper functions for lemmatizations
 
 from nltk import word_tokenize
